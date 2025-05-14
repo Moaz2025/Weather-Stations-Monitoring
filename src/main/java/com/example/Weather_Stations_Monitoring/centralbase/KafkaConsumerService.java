@@ -11,8 +11,8 @@ public class KafkaConsumerService {
 
     @KafkaListener(topics = "weather-topic", groupId = "central-station")
     public void listen(String json) {
+        //System.out.println("Received json at consumer " + json);
         weatherMessageHandler.handle(json);
-        System.out.println(json);
     }
 }
 

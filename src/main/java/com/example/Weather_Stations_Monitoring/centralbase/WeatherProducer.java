@@ -13,9 +13,9 @@ public class WeatherProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendWeatherStatus(WeatherStatus status) {
+    public void sendWeatherStatus(WeatherStatus weatherStatus) {
         String topic = "weather-topic";
-        kafkaTemplate.send(topic, String.valueOf(status.getStationId()), status);
+        kafkaTemplate.send(topic, String.valueOf(weatherStatus.getStationId()), weatherStatus);
     }
 }
 

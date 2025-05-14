@@ -16,7 +16,7 @@ public class ParquetBatchWriter {
 
     private final List<WeatherStatus> buffer = new ArrayList<>();
     private static final int BATCH_SIZE = 10000;
-    private static final String BASE_DIR = "data/parquet/";
+    private static final String BASE_DIR = "src/main/resources/data/parquet/";
 
     public synchronized void add(WeatherStatus status) {
         buffer.add(status);
