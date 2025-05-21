@@ -9,7 +9,7 @@ public class KafkaConsumerService {
     @Autowired
     private WeatherMessageHandler weatherMessageHandler;
 
-    @KafkaListener(topics = "weather-topic", groupId = "central-station")
+    @KafkaListener(topics = "weather-data", groupId = "central-station")
     public void listen(String json) {
         //System.out.println("Received json at consumer " + json);
         weatherMessageHandler.handle(json);

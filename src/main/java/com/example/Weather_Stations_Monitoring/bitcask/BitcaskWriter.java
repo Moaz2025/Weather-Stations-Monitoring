@@ -1,5 +1,6 @@
 package com.example.Weather_Stations_Monitoring.bitcask;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -19,7 +20,8 @@ public class BitcaskWriter {
     private String currentSegmentName;
     private long currentOffset = 0;
 
-    public BitcaskWriter(String segment_dir, String hint_dir) {
+    public BitcaskWriter(@Value("${bitcask.segment.dir}") String segment_dir,
+                         @Value("${bitcask.hint.dir}") String hint_dir) {
         SEGMENT_DIR = segment_dir;
         HINT_DIR = hint_dir;
         try {

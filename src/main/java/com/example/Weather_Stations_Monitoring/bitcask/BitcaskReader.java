@@ -1,5 +1,6 @@
 package com.example.Weather_Stations_Monitoring.bitcask;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -19,8 +20,9 @@ public class BitcaskReader {
 
     private final Map<String, ValuePosition> keyDirectory = new HashMap<>();
 
-    public BitcaskReader(String data_dir, String hint_dir) {
-        DATA_DIR = data_dir;
+    public BitcaskReader(@Value("${bitcask.segment.dir}") String segment_dir,
+                         @Value("${bitcask.hint.dir}") String hint_dir) {
+        DATA_DIR = segment_dir;
         HINT_DIR = hint_dir;
         loadHintFiles();
     }
@@ -44,7 +46,7 @@ public class BitcaskReader {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException("Error loading hint files", e);
+            //throw new RuntimeException("Error loading hint files", e);
         }
     }
 
