@@ -1,5 +1,6 @@
 package com.example.Weather_Stations_Monitoring.bitcask;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,9 @@ import java.util.*;
 
 @Component
 public class BitcaskWriter {
+
+    @Autowired
+    private BitcaskIndex bitcaskIndex;
 
     private final String SEGMENT_DIR;
     private final String HINT_DIR;
@@ -57,7 +61,7 @@ public class BitcaskWriter {
                 .orElse(0) + 1;
     }
 
-    public synchronized void write(String key, String value) {
+    public void write(String key, String value) {
         try {
             byte[] keyBytes = key.getBytes();
             byte[] valueBytes = value.getBytes();
@@ -74,7 +78,7 @@ public class BitcaskWriter {
             currentSegmentFile.write(valueBytes);
 
             ValuePosition pos = new ValuePosition(currentSegmentName, currentOffset, valueBytes.length);
-            keyDirectory.put(key, pos);
+            bitcaskIndex.put(key, pos);
 
             // Append to hint file
             currentHintWriter.write(key + "," + currentSegmentName + "," + currentOffset + "," + valueBytes.length);

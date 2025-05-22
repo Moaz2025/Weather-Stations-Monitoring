@@ -1,29 +1,29 @@
 package com.example.Weather_Stations_Monitoring.bitcask;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.file.*;
 
 @Component
 public class BitcaskReader {
+
     private final String DATA_DIR;
     private final String HINT_DIR;
 
-    private final Map<String, ValuePosition> keyDirectory = new HashMap<>();
+    private final BitcaskIndex bitcaskIndex;
 
+    @Autowired
     public BitcaskReader(@Value("${bitcask.segment.dir}") String segment_dir,
-                         @Value("${bitcask.hint.dir}") String hint_dir) {
-        DATA_DIR = segment_dir;
-        HINT_DIR = hint_dir;
+                         @Value("${bitcask.hint.dir}") String hint_dir,
+                         BitcaskIndex bitcaskIndex) {
+        this.DATA_DIR = segment_dir;
+        this.HINT_DIR = hint_dir;
+        this.bitcaskIndex = bitcaskIndex;
         loadHintFiles();
     }
 
@@ -40,18 +40,18 @@ public class BitcaskReader {
                             String file = parts[1];
                             long offset = Long.parseLong(parts[2]);
                             int length = Integer.parseInt(parts[3]);
-                            keyDirectory.put(key, new ValuePosition(file, offset, length));
+                            bitcaskIndex.put(key, new ValuePosition(file, offset, length));
                         }
                     }
                 }
             }
         } catch (IOException e) {
-            //throw new RuntimeException("Error loading hint files", e);
+            //System.err.println("Error loading hint files: " + e.getMessage());
         }
     }
 
     public String read(String key) {
-        ValuePosition pos = keyDirectory.get(key);
+        ValuePosition pos = bitcaskIndex.get(key);
         if (pos == null) return "Key not found";
 
         try (RandomAccessFile file = new RandomAccessFile(DATA_DIR + "/" + pos.fileName(), "r")) {
@@ -66,7 +66,7 @@ public class BitcaskReader {
 
     public String readAll() {
         StringBuilder sb = new StringBuilder();
-        for (String key : keyDirectory.keySet()) {
+        for (String key : bitcaskIndex.getAll().keySet()) {
             sb.append(key).append(": ").append(read(key)).append("\n");
         }
         return sb.toString();
