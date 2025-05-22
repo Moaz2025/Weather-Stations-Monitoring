@@ -66,16 +66,15 @@ public class BitcaskWriter {
             byte[] keyBytes = key.getBytes();
             byte[] valueBytes = value.getBytes();
 
-            int entrySize = 4 + keyBytes.length + 4 + valueBytes.length;
+            int entrySize = 4 + valueBytes.length;
             if (currentOffset + entrySize > MAX_SEGMENT_SIZE) {
                 rotateSegment();
             }
 
-            // Write format: [keyLen][key][valueLen][value]
-            currentSegmentFile.writeInt(keyBytes.length);
-            currentSegmentFile.write(keyBytes);
+            // Write only: [valueLen][value]
             currentSegmentFile.writeInt(valueBytes.length);
             currentSegmentFile.write(valueBytes);
+
 
             ValuePosition pos = new ValuePosition(currentSegmentName, currentOffset, valueBytes.length);
             bitcaskIndex.put(key, pos);

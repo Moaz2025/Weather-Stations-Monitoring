@@ -20,6 +20,7 @@ public class WeatherMessageHandler {
             WeatherStatus weatherStatus = mapper.readValue(json, WeatherStatus.class);
             //System.out.println("After mapping " + weatherStatus);
             long key = weatherStatus.getStationId();
+            //System.out.println("Writing to bitcask: " + String.valueOf(key) + " : " + json);
             bitcaskWriter.write(String.valueOf(key), json);
             parquetBatchWriter.add(weatherStatus);
         } catch (Exception e) {

@@ -52,13 +52,16 @@ public class BitcaskReader {
 
     public String read(String key) {
         ValuePosition pos = bitcaskIndex.get(key);
+        //System.out.println("ValPos: " + pos);
         if (pos == null) return "Key not found";
 
         try (RandomAccessFile file = new RandomAccessFile(DATA_DIR + "/" + pos.fileName(), "r")) {
             file.seek(pos.offset());
-            byte[] buffer = new byte[pos.length()];
-            file.readFully(buffer);
-            return new String(buffer);
+            int valueLength = file.readInt();
+            byte[] valueBytes = new byte[valueLength];
+            file.readFully(valueBytes);
+            return new String(valueBytes);
+
         } catch (IOException e) {
             return "Error reading value for key: " + key;
         }
@@ -66,6 +69,7 @@ public class BitcaskReader {
 
     public String readAll() {
         StringBuilder sb = new StringBuilder();
+        //System.out.println("Number of messages: " + bitcaskIndex.getAll().keySet().size());
         for (String key : bitcaskIndex.getAll().keySet()) {
             sb.append(key).append(": ").append(read(key)).append("\n");
         }
