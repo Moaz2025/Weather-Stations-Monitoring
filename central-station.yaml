@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-monitoring-deployment
+  labels:
+    app: weather-monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather-monitoring
+  template:
+    metadata:
+      labels:
+        app: weather-monitoring
+    spec:
+      containers:
+        - name: weather-monitoring
+          image: weather-monitoring-app:latest
+          imagePullPolicy: Never  # Important when using a local image
+          ports:
+            - containerPort: 8080
