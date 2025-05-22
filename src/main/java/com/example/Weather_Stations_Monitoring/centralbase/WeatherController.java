@@ -45,7 +45,7 @@ public class WeatherController {
 
             String batteryStatus = randomBatteryStatus(random);
 
-            WeatherStatus.Weather weather = new WeatherStatus.Weather(
+            WeatherStatus.WeatherData weather = new WeatherStatus.WeatherData(
                     10 + random.nextInt(91),
                     30 + random.nextInt(71),
                     1 + random.nextInt(100)
