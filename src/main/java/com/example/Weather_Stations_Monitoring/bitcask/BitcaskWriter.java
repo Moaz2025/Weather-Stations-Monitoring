@@ -96,4 +96,10 @@ public class BitcaskWriter {
         currentHintWriter.close();
         initSegment();
     }
+
+    public int getCurrentSegmentIndex() {
+        String[] parts = currentSegmentName.replace(".data", "").split("-");
+        return Integer.parseInt(parts[1]);
+    }
+
 }
