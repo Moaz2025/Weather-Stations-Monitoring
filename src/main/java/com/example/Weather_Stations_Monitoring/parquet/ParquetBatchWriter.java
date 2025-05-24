@@ -3,6 +3,7 @@ package com.example.Weather_Stations_Monitoring.parquet;
 import com.example.Weather_Stations_Monitoring.centralbase.WeatherStatus;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -18,14 +19,14 @@ public class ParquetBatchWriter {
     private static final int BATCH_SIZE = 10000;
     private static final String BASE_DIR = "src/main/resources/data/parquet/";
 
-    public synchronized void add(WeatherStatus status) {
+    public synchronized void add(WeatherStatus status) throws IOException {
         buffer.add(status);
         if (buffer.size() >= BATCH_SIZE) {
             flush();
         }
     }
 
-    private void flush() {
+    private void flush() throws IOException {
         Map<String, List<WeatherStatus>> grouped = buffer.stream()
                 .collect(Collectors.groupingBy(this::partitionPath));
 
