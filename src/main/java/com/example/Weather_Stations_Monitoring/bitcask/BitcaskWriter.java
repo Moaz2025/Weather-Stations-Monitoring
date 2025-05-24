@@ -16,7 +16,7 @@ public class BitcaskWriter {
 
     private final String SEGMENT_DIR;
     private final String HINT_DIR;
-    private static final long MAX_SEGMENT_SIZE = 1024 * 1024; // 1MB
+    private static final long MAX_SEGMENT_SIZE = 10 * 1024; // 10 kB
 
     private final Map<String, ValuePosition> keyDirectory = new HashMap<>();
     private RandomAccessFile currentSegmentFile;

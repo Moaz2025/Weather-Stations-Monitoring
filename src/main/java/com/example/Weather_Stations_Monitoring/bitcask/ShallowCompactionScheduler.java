@@ -13,7 +13,7 @@ public class ShallowCompactionScheduler {
     @Autowired
     private BitcaskShallowCompactor compactor;
 
-    @Scheduled(fixedRate = 30 * 60 * 1000) // every 30 min
+    @Scheduled(fixedRate = 1 * 60 * 1000) // every 1 min
     public void cleanupOldSegments() {
         System.out.println("ShallowCompactionScheduler runs at :");
         printCurrentTime();
