@@ -57,7 +57,6 @@ public class ParquetWriterUtil {
             file.delete();
         }
 
-
         OutputFile outputFile = new OutputFile() {
             @Override
             public PositionOutputStream create(long blockSizeHint) throws IOException {

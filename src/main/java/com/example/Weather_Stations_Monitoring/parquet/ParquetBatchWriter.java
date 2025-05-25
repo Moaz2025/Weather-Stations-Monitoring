@@ -4,7 +4,6 @@ import com.example.Weather_Stations_Monitoring.centralbase.WeatherStatus;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class ParquetBatchWriter {
     }
 
     private String partitionPath(WeatherStatus status) {
-        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(status.getStatusTimestamp()), ZoneId.of("UTC"));
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("UTC"));
         return BASE_DIR +
                 "station_id=" + status.getStationId() + "/" +
                 "year=" + zonedDateTime.getYear() + "/" +
