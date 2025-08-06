@@ -62,4 +62,4 @@ Built as part of the **Designing Data Intensive Applications** course at **Alexa
 - Docker & Kubernetes
 - Java Flight Recorder (JFR)
 ## Other Repositories
-[Parquet Reader](https://example.com)
+[Parquet Reader]((https://github.com/AhmedAli3011/ParquetIngestor)
